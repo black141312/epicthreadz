@@ -1,25 +1,20 @@
-// Home page Velo code for Epic Threadz
-// Replace element IDs and placeholder images with your actual page elements and media
-
 import wixLocation from 'wix-location';
 
 $w.onReady(function () {
   // ---------------- Offer Banner ----------------
-  const OFFER_ID = "#offerText"; // Text element for offer
-  if ($w(OFFER_ID)) {
-    $w(OFFER_ID).text = "🎉 Special Offer: Buy Any 3 T-Shirts & Get a Surprise Gift! 🎉";
-    $w(OFFER_ID).onClick(() => wixLocation.to("/offers"));
+  const OFFER_BOX = "#offerBox"; // Use a Box element instead of Text for clickable banner
+  if ($w(OFFER_BOX)) {
+    $w(OFFER_BOX).onClick(() => wixLocation.to("/offers"));
   }
 
   // ---------------- Hero Boxes ----------------
-  // Use Boxes or Containers for hero slides instead of Slideshow
   const HERO_DATA = [
     {
       title: "Unleash the Dream. Wear Your Anime.",
       subtitle: "Get 15% Off Your First Purchase!",
       image: "https://static.wixstatic.com/media/placeholder.jpg",
       link: "/shop",
-      boxId: "#heroBox1", // replace with actual Box ID
+      boxId: "#heroBox1", // Must be a Box marked clickable
       titleId: "#heroTitle1",
       subtitleId: "#heroSubtitle1",
       imageId: "#heroImage1"
@@ -42,16 +37,16 @@ $w.onReady(function () {
       if ($w(slide.subtitleId)) $w(slide.subtitleId).text = slide.subtitle;
       if ($w(slide.imageId)) $w(slide.imageId).src = slide.image;
 
-      // Make entire box clickable
-      $w(slide.boxId).onClick(() => wixLocation.to(slide.link));
+      // Click only on Box elements
+      if ($w(slide.boxId).type === "Box" || $w(slide.boxId).type === "Container") {
+        $w(slide.boxId).onClick(() => wixLocation.to(slide.link));
+      }
     }
   });
 
-  // ---------------- Anime Categories Repeater ----------------
+  // ---------------- Repeaters ----------------
   const animeCategories = [
-    { name: "One Piece", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Sail with the Straw Hat Pirates", link: "/collections/one-piece" },
-    { name: "Naruto", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Ninja way of the Hidden Leaf", link: "/collections/naruto" },
-    { name: "Bleach", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Soul Reaper battles await", link: "/collections/bleach" }
+    { name: "One Piece", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Sail with the Straw Hat Pirates", link: "/collections/one-piece" }
   ];
 
   const ANIME_REPEATER = "#animeCategoriesRepeater";
@@ -61,43 +56,10 @@ $w.onReady(function () {
       if ($item("#catImage")) $item("#catImage").src = itemData.image;
       if ($item("#catName")) $item("#catName").text = itemData.name;
       if ($item("#catDescription")) $item("#catDescription").text = itemData.description;
-      if ($item("#catLink")) $item("#catLink").onClick(() => wixLocation.to(itemData.link));
+      // Click only on Button element inside repeater
+      if ($item("#catLink") && $item("#catLink").type === "Button") {
+        $item("#catLink").onClick(() => wixLocation.to(itemData.link));
+      }
     });
   }
-
-  // ---------------- Non-Anime Categories Repeater ----------------
-  const nonAnimeCategories = [
-    { name: "Meme Culture", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Internet humor you can wear", link: "/collections/meme-culture" },
-    { name: "Minimalist", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Less is more in design", link: "/collections/minimalist" }
-  ];
-
-  const NON_ANIME_REPEATER = "#nonAnimeCategoriesRepeater";
-  if ($w(NON_ANIME_REPEATER)) {
-    $w(NON_ANIME_REPEATER).data = nonAnimeCategories;
-    $w(NON_ANIME_REPEATER).onItemReady(($item, itemData) => {
-      if ($item("#catImage")) $item("#catImage").src = itemData.image;
-      if ($item("#catName")) $item("#catName").text = itemData.name;
-      if ($item("#catDescription")) $item("#catDescription").text = itemData.description;
-      if ($item("#catLink")) $item("#catLink").onClick(() => wixLocation.to(itemData.link));
-    });
-  }
-
-  // ---------------- Featured Products Repeater ----------------
-  const featuredProducts = [
-    { title: "Naruto Shadow Clone Tee", price: 1199, image: "https://static.wixstatic.com/media/placeholder.jpg", link: "/product/naruto-shadow-clone-tee" },
-    { title: "Solo Leveling Arise Tee", price: 1299, image: "https://static.wixstatic.com/media/placeholder.jpg", link: "/product/solo-arise-tee" }
-  ];
-
-  const FEATURED_REPEATER = "#featuredProductsRepeater";
-  const formatINR = price => "₹" + Math.round(price);
-  if ($w(FEATURED_REPEATER)) {
-    $w(FEATURED_REPEATER).data = featuredProducts;
-    $w(FEATURED_REPEATER).onItemReady(($item, itemData) => {
-      if ($item("#prodImage")) $item("#prodImage").src = itemData.image;
-      if ($item("#prodTitle")) $item("#prodTitle").text = itemData.title;
-      if ($item("#prodPrice")) $item("#prodPrice").text = formatINR(itemData.price);
-      if ($item("#prodBtn")) $item("#prodBtn").onClick(() => wixLocation.to(itemData.link));
-    });
-  }
-
 });
