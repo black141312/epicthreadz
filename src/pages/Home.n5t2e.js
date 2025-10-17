@@ -1,67 +1,63 @@
-// src/pages/home/home.js
-// Homepage Velo code for Epic Threadz
-// NOTE: Replace element IDs and image URLs below to match your actual page elements & media files.
+// Home page Velo code for Epic Threadz
+// Replace element IDs and placeholder images with your actual page elements and media
 
 import wixLocation from 'wix-location';
 
 $w.onReady(function () {
-  // ---------- Offer banner ----------
-  // Replace '#offerText' with your Text element ID that should show the offer banner.
-  const OFFER_ID = "#offerText";
+  // ---------------- Offer Banner ----------------
+  const OFFER_ID = "#offerText"; // Text element for offer
   if ($w(OFFER_ID)) {
     $w(OFFER_ID).text = "🎉 Special Offer: Buy Any 3 T-Shirts & Get a Surprise Gift! 🎉";
   }
 
-  // ---------- Hero (repeater or slideshow) ----------
-  // If your site uses a Repeater for hero slides use '#heroRepeater' and item IDs:
-  //   #heroImage (Image), #heroTitle (Text), #heroSubtitle (Text), #heroCTA (Button)
-  // If your hero is a Slideshow element, replace this block with Slideshow API code.
-  const heroData = [
+  // ---------------- Hero Slideshow ----------------
+  // Use Slideshow element ID (replace #heroSlideshow)
+  const HERO_SLIDES = [
     {
-      image: "https://static.wixstatic.com/media/placeholder.jpg", // replace with media URL or mediaId
       title: "Unleash the Dream. Wear Your Anime.",
       subtitle: "Get 15% Off Your First Purchase!",
+      image: "https://static.wixstatic.com/media/placeholder.jpg",
       link: "/shop"
     },
     {
-      image: "https://static.wixstatic.com/media/placeholder.jpg",
       title: "Free Shipping",
       subtitle: "On All Orders",
+      image: "https://static.wixstatic.com/media/placeholder.jpg",
       link: "/collections"
     }
   ];
 
-  const HERO_REPEATER = "#heroRepeater";
-  if ($w(HERO_REPEATER)) {
-    $w(HERO_REPEATER).data = heroData;
-    $w(HERO_REPEATER).onItemReady(($item, itemData) => {
-      if ($item("#heroImage")) $item("#heroImage").src = itemData.image;
-      if ($item("#heroTitle")) $item("#heroTitle").text = itemData.title;
-      if ($item("#heroSubtitle")) $item("#heroSubtitle").text = itemData.subtitle;
-      if ($item("#heroCTA")) {
-        $item("#heroCTA").label = "Shop Now";
-        $item("#heroCTA").onClick(() => wixLocation.to(itemData.link || "/shop"));
-      }
-      // Optional: whole item clickable
-      if ($item("#heroContainer")) {
-        $item("#heroContainer").onClick(() => wixLocation.to(itemData.link || "/shop"));
-      }
+  const HERO_ID = "#heroSlideshow"; // Slideshow element
+  if ($w(HERO_ID)) {
+    const slides = HERO_SLIDES.map(slide => ({
+      title: slide.title,
+      subtitle: slide.subtitle,
+      image: slide.image
+    }));
+    $w(HERO_ID).slides = slides;
+
+    // Optional: update text/image elements when slide changes
+    $w(HERO_ID).onChange(() => {
+      const idx = $w(HERO_ID).currentIndex;
+      $w("#heroTitle").text = HERO_SLIDES[idx].title;
+      $w("#heroSubtitle").text = HERO_SLIDES[idx].subtitle;
+      $w("#heroImage").src = HERO_SLIDES[idx].image;
+    });
+
+    // Click on slide navigates to link
+    $w(HERO_ID).onClick(() => {
+      const idx = $w(HERO_ID).currentIndex;
+      wixLocation.to(HERO_SLIDES[idx].link);
     });
   }
 
-  // ---------- Repeater helper: anime categories ----------
-  // Repeater ID: #animeCategoriesRepeater
-  // Item elements: #catImage (Image), #catName (Text), #catDescription (Text), #catLink (Button)
+  // ---------------- Anime Categories Repeater ----------------
   const animeCategories = [
     { name: "One Piece", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Sail with the Straw Hat Pirates", link: "/collections/one-piece" },
     { name: "Naruto", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Ninja way of the Hidden Leaf", link: "/collections/naruto" },
     { name: "Bleach", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Soul Reaper battles await", link: "/collections/bleach" },
     { name: "Demon Slayer", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Slay demons with style", link: "/collections/demon-slayer" },
-    { name: "Solo Leveling", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Arise and level up your wardrobe", link: "/collections/solo-leveling" },
-    { name: "Attack on Titan", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Freedom fighters collection", link: "/collections/attack-on-titan" },
-    { name: "Jujutsu Kaisen", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Cursed techniques in fashion", link: "/collections/jujutsu-kaisen" },
-    { name: "My Hero Academia", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Plus Ultra hero gear", link: "/collections/my-hero" },
-    { name: "Hunter x Hunter", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Master your Nen ability", link: "/collections/hxh" }
+    { name: "Solo Leveling", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Arise and level up your wardrobe", link: "/collections/solo-leveling" }
   ];
 
   const ANIME_REPEATER = "#animeCategoriesRepeater";
@@ -71,17 +67,15 @@ $w.onReady(function () {
       if ($item("#catImage")) $item("#catImage").src = itemData.image;
       if ($item("#catName")) $item("#catName").text = itemData.name;
       if ($item("#catDescription")) $item("#catDescription").text = itemData.description;
-      if ($item("#catLink")) $item("#catLink").onClick(() => wixLocation.to(itemData.link || "/collections"));
+      if ($item("#catLink")) $item("#catLink").onClick(() => wixLocation.to(itemData.link));
     });
   }
 
-  // ---------- Non-anime categories ----------
+  // ---------------- Non-Anime Categories Repeater ----------------
   const nonAnimeCategories = [
     { name: "Meme Culture", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Internet humor you can wear", link: "/collections/meme-culture" },
     { name: "Minimalist", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Less is more in design", link: "/collections/minimalist" },
-    { name: "Vintage Streetwear", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Classic urban style", link: "/collections/vintage" },
-    { name: "Motivational", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Wear your inspiration daily", link: "/collections/motivational" },
-    { name: "Retro Gaming", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Level up your wardrobe", link: "/collections/retro-gaming" }
+    { name: "Vintage Streetwear", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Classic urban style", link: "/collections/vintage" }
   ];
 
   const NON_ANIME_REPEATER = "#nonAnimeCategoriesRepeater";
@@ -91,31 +85,21 @@ $w.onReady(function () {
       if ($item("#catImage")) $item("#catImage").src = itemData.image;
       if ($item("#catName")) $item("#catName").text = itemData.name;
       if ($item("#catDescription")) $item("#catDescription").text = itemData.description;
-      if ($item("#catLink")) $item("#catLink").onClick(() => wixLocation.to(itemData.link || "/collections"));
+      if ($item("#catLink")) $item("#catLink").onClick(() => wixLocation.to(itemData.link));
     });
   }
 
-  // ---------- Featured products (repeaters) ----------
-  // Product item IDs inside repeater: #prodImage, #prodTitle, #prodPrice, #prodBtn
-  const featuredAnimeProducts = [
-    { id: "p1", title: "Naruto Shadow Clone Tee", price: 1199, image: "https://static.wixstatic.com/media/placeholder.jpg", link: "/product/naruto-shadow-clone-tee" },
-    { id: "p2", title: "Solo Leveling Arise Tee", price: 1299, image: "https://static.wixstatic.com/media/placeholder.jpg", link: "/product/solo-arise-tee" },
-    { id: "p3", title: "Ninja Hoodie", price: 1600, image: "https://static.wixstatic.com/media/placeholder.jpg", link: "/product/ninja-hoodie" },
-    { id: "p4", title: "Tropical Baby", price: 1600, image: "https://static.wixstatic.com/media/placeholder.jpg", link: "/product/tropical-baby" }
+  // ---------------- Featured Products Repeater ----------------
+  const featuredProducts = [
+    { title: "Naruto Shadow Clone Tee", price: 1199, image: "https://static.wixstatic.com/media/placeholder.jpg", link: "/product/naruto-shadow-clone-tee" },
+    { title: "Solo Leveling Arise Tee", price: 1299, image: "https://static.wixstatic.com/media/placeholder.jpg", link: "/product/solo-arise-tee" }
   ];
 
-  const formatINR = price => {
-    try {
-      return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(price);
-    } catch (e) {
-      return "₹" + Math.round(price);
-    }
-  };
-
-  const FEATURED_ANIME_REPEATER = "#featuredAnimeRepeater";
-  if ($w(FEATURED_ANIME_REPEATER)) {
-    $w(FEATURED_ANIME_REPEATER).data = featuredAnimeProducts;
-    $w(FEATURED_ANIME_REPEATER).onItemReady(($item, itemData) => {
+  const FEATURED_REPEATER = "#featuredProductsRepeater";
+  const formatINR = price => "₹" + Math.round(price);
+  if ($w(FEATURED_REPEATER)) {
+    $w(FEATURED_REPEATER).data = featuredProducts;
+    $w(FEATURED_REPEATER).onItemReady(($item, itemData) => {
       if ($item("#prodImage")) $item("#prodImage").src = itemData.image;
       if ($item("#prodTitle")) $item("#prodTitle").text = itemData.title;
       if ($item("#prodPrice")) $item("#prodPrice").text = formatINR(itemData.price);
@@ -123,34 +107,8 @@ $w.onReady(function () {
     });
   }
 
-  // ---------- Upcoming drops repeaters ----------
-  const upcomingAnimeProducts = [
-    { category: "Solo Leveling", name: "Shadow Monarch Tee", image: "https://static.wixstatic.com/media/placeholder.jpg", comingSoon: true, link: "#" },
-    { category: "Demon Slayer", name: "Hashira Hoodie", image: "https://static.wixstatic.com/media/placeholder.jpg", comingSoon: true, link: "#" }
-  ];
-
-  const UPCOMING_ANIME_REPEATER = "#upcomingAnimeRepeater";
-  if ($w(UPCOMING_ANIME_REPEATER)) {
-    $w(UPCOMING_ANIME_REPEATER).data = upcomingAnimeProducts;
-    $w(UPCOMING_ANIME_REPEATER).onItemReady(($item, itemData) => {
-      if ($item("#upImage")) $item("#upImage").src = itemData.image;
-      if ($item("#upName")) $item("#upName").text = itemData.name;
-      if ($item("#upCategory")) $item("#upCategory").text = itemData.category;
-      if ($item("#upBadge")) {
-        if (itemData.comingSoon) $item("#upBadge").show();
-        else $item("#upBadge").hide();
-      }
-      if ($item("#upBtn")) $item("#upBtn").onClick(() => wixLocation.to(itemData.link || "#"));
-    });
-  }
-
-  // ---------- Optional: Analytics click handlers (example) ----------
-  // Example: track when a user clicks the offer banner
+  // ---------------- Optional: Click on Offer Banner ----------------
   if ($w(OFFER_ID)) {
-    $w(OFFER_ID).onClick(() => {
-      // track analytics or route to offers page
-      wixLocation.to("/offers");
-    });
+    $w(OFFER_ID).onClick(() => wixLocation.to("/offers"));
   }
-
-}); // $w.onReady
+});
