@@ -3,10 +3,10 @@
 // When the homepage is loaded
 $w.onReady(function () {
   // --- Offer Banner ---
-  $w("#offerBanner").text = "🎉 Special Offer: Buy Any 3 T-Shirts & Get a Surprise Gift! 🎉";
+  $w("#box1").text = "🎉 Special Offer: Buy Any 3 T-Shirts & Get a Surprise Gift! 🎉";
 
   // --- Hero Carousel ---
-  $w("#heroCarousel").items = [
+  $w("#section1").items = [
     { src: "placeholder.jpg", title: "Unleash the Dream. Wear Your Anime.", subtitle: "Get 15% Off Your First Purchase!" },
     { src: "placeholder.jpg", title: "Free Shipping", subtitle: "On All Orders" }
   ];
