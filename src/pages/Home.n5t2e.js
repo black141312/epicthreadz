@@ -8,56 +8,50 @@ $w.onReady(function () {
   const OFFER_ID = "#offerText"; // Text element for offer
   if ($w(OFFER_ID)) {
     $w(OFFER_ID).text = "🎉 Special Offer: Buy Any 3 T-Shirts & Get a Surprise Gift! 🎉";
+    $w(OFFER_ID).onClick(() => wixLocation.to("/offers"));
   }
 
-  // ---------------- Hero Slideshow ----------------
-  // Use Slideshow element ID (replace #heroSlideshow)
-  const HERO_SLIDES = [
+  // ---------------- Hero Boxes ----------------
+  // Use Boxes or Containers for hero slides instead of Slideshow
+  const HERO_DATA = [
     {
       title: "Unleash the Dream. Wear Your Anime.",
       subtitle: "Get 15% Off Your First Purchase!",
       image: "https://static.wixstatic.com/media/placeholder.jpg",
-      link: "/shop"
+      link: "/shop",
+      boxId: "#heroBox1", // replace with actual Box ID
+      titleId: "#heroTitle1",
+      subtitleId: "#heroSubtitle1",
+      imageId: "#heroImage1"
     },
     {
       title: "Free Shipping",
       subtitle: "On All Orders",
       image: "https://static.wixstatic.com/media/placeholder.jpg",
-      link: "/collections"
+      link: "/collections",
+      boxId: "#heroBox2",
+      titleId: "#heroTitle2",
+      subtitleId: "#heroSubtitle2",
+      imageId: "#heroImage2"
     }
   ];
 
-  const HERO_ID = "#heroSlideshow"; // Slideshow element
-  if ($w(HERO_ID)) {
-    const slides = HERO_SLIDES.map(slide => ({
-      title: slide.title,
-      subtitle: slide.subtitle,
-      image: slide.image
-    }));
-    $w(HERO_ID).slides = slides;
+  HERO_DATA.forEach(slide => {
+    if ($w(slide.boxId)) {
+      if ($w(slide.titleId)) $w(slide.titleId).text = slide.title;
+      if ($w(slide.subtitleId)) $w(slide.subtitleId).text = slide.subtitle;
+      if ($w(slide.imageId)) $w(slide.imageId).src = slide.image;
 
-    // Optional: update text/image elements when slide changes
-    $w(HERO_ID).onChange(() => {
-      const idx = $w(HERO_ID).currentIndex;
-      $w("#heroTitle").text = HERO_SLIDES[idx].title;
-      $w("#heroSubtitle").text = HERO_SLIDES[idx].subtitle;
-      $w("#heroImage").src = HERO_SLIDES[idx].image;
-    });
-
-    // Click on slide navigates to link
-    $w(HERO_ID).onClick(() => {
-      const idx = $w(HERO_ID).currentIndex;
-      wixLocation.to(HERO_SLIDES[idx].link);
-    });
-  }
+      // Make entire box clickable
+      $w(slide.boxId).onClick(() => wixLocation.to(slide.link));
+    }
+  });
 
   // ---------------- Anime Categories Repeater ----------------
   const animeCategories = [
     { name: "One Piece", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Sail with the Straw Hat Pirates", link: "/collections/one-piece" },
     { name: "Naruto", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Ninja way of the Hidden Leaf", link: "/collections/naruto" },
-    { name: "Bleach", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Soul Reaper battles await", link: "/collections/bleach" },
-    { name: "Demon Slayer", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Slay demons with style", link: "/collections/demon-slayer" },
-    { name: "Solo Leveling", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Arise and level up your wardrobe", link: "/collections/solo-leveling" }
+    { name: "Bleach", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Soul Reaper battles await", link: "/collections/bleach" }
   ];
 
   const ANIME_REPEATER = "#animeCategoriesRepeater";
@@ -74,8 +68,7 @@ $w.onReady(function () {
   // ---------------- Non-Anime Categories Repeater ----------------
   const nonAnimeCategories = [
     { name: "Meme Culture", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Internet humor you can wear", link: "/collections/meme-culture" },
-    { name: "Minimalist", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Less is more in design", link: "/collections/minimalist" },
-    { name: "Vintage Streetwear", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Classic urban style", link: "/collections/vintage" }
+    { name: "Minimalist", image: "https://static.wixstatic.com/media/placeholder.jpg", description: "Less is more in design", link: "/collections/minimalist" }
   ];
 
   const NON_ANIME_REPEATER = "#nonAnimeCategoriesRepeater";
@@ -107,8 +100,4 @@ $w.onReady(function () {
     });
   }
 
-  // ---------------- Optional: Click on Offer Banner ----------------
-  if ($w(OFFER_ID)) {
-    $w(OFFER_ID).onClick(() => wixLocation.to("/offers"));
-  }
 });
